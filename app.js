@@ -8,17 +8,24 @@ if(process.env.NODE_ENV === 'development') {
   console.log('Starting server in development mode');
   require('dotenv').config();
 }
+const MONGODB_URI = process.env.MONGODB_URI;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const MEMBER_CODE = process.env.MEMBER_CODE;
+const ADMIN_CODE = process.env.ADMIN_CODE;
 
 const express = require('express');
 const createError = require('http-errors');
 
+const bcrypt = require('bcryptjs'); //TODO: in future different implementation for hashing than bcrypt. Also figure out how much to salt hashes.
+const passportConfig = require('./config/passport-config');
+
 const viewEngineConfig = require('./config/viewEngine-config');
 const defaultConfig = require('./config/default-config');
-
 const mongooseConfig = require('./config/mongoose-config');
-const MONGODB_URI = process.env.MONGODB_URI;
 
 const topLevelErrors = require('./middleware/topLevelError-middleware');
+
+const User = require('./models/User');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -30,13 +37,18 @@ const usersRouter = require('./routes/users');
 */
 
 //Connect to MongoDB
-mongooseConfig(MONGODB_URI).catch(topLevelErrors.trigger);
+mongooseConfig(MONGODB_URI)
+  .catch(topLevelErrors.trigger);
 
 // Default imports
-var app = express();
+const app = express();
 topLevelErrors.initialize(app);
 viewEngineConfig(app);
 defaultConfig(app);
+
+// Initializing passport
+// Passportconfig initializes and then returns the passport itself after
+const passport = passportConfig(app,SESSION_SECRET,User); 
 
 /*
 -------------------------------------------------------------------------------------------
