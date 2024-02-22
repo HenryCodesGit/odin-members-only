@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <% if(errors.length) { %>
+        <h1>Validation errors</h1>
+            <ul>
+                <% for(let i=0; i<errors.length; i++) { %>
+                    <li><%= errors[i] %></li>
+                <% } %>
+            </ul>
+    <% } %>
+    <h1>Register</h1>
+    <form method="POST">
+        <div class="form-control-group">
+            <label for="firstName">First Name: </label>
+            <input 
+                type="text" 
+                name="firstName" 
+                id="firstName" 
+                required
+                value= <% if(errors.length) { %> <%= info.name.first %> <% } else { %>  '' <% } %> 
+            />
+        </div>
+        <div class="form-control-group">
+            <label for="lastName">Last Name: </label>
+            <input 
+                type="text" 
+                name="lastName"
+                id="lastName" 
+                required 
+                value= <% if(errors.length) { %> <%= info.name.last %> <% } else { %>  '' <% } %> 
+            />
+        </div>
+        <div class="form-control-group">
+            <label for="email">Email: </label>
+            <input 
+                type="text" 
+                name="email" 
+                id="email" 
+                required 
+                value= <% if(errors.length) { %> <%= info.email %> <% } else { %>  '' <% } %>    
+            />
+        </div>
+        <div class="form-control-group">
+            <label for="password">Password: </label>
+            <input type="password" name="password" id="password" required />
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

@@ -6,6 +6,33 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <p>
+      Welcome to <%= title %>!
+      <% if (currentUser) { %>
+        <%= currentUser.name.first %>,
+        your membership status is '<%= currentUser.status %>'
+      <% } %>
+    </p>
+
+    <% if(locals.errors && errors.length) { %>
+      <h1>Validation errors</h1>
+          <ul>
+              <% for(let i=0; i<errors.length; i++) { %>
+                  <li><%= errors[i] %></li>
+              <% } %>
+          </ul>
+    <% } %>
+
+    <% if (currentUser) { %>
+        <form method="POST">
+          <div class="form-control-group">
+            <label for="message">Message: </label>
+            <input type="message" name="message" id="message" required />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+
+        <a href="/logout">Log out</a>
+    <% } %>
   </body>
 </html>

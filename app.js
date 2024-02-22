@@ -29,6 +29,9 @@ const User = require('./models/User');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const registerRouter = require('./routes/register');
+const loginRouter = require('./routes/login');
+const logoutRouter = require('./routes/logout');
 
 /*
 -------------------------------------------------------------------------------------------
@@ -59,9 +62,18 @@ const passport = passportConfig(app,SESSION_SECRET,User);
 // Middleware to catch top level errors (outside of routes);
 app.use(topLevelErrors.middleware);
 
+// Middleware to keep track of the current user in the session
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
 
 /*
 -------------------------------------------------------------------------------------------
