@@ -10,8 +10,6 @@ if(process.env.NODE_ENV === 'development') {
 }
 const MONGODB_URI = process.env.MONGODB_URI;
 const SESSION_SECRET = process.env.SESSION_SECRET;
-const MEMBER_CODE = process.env.MEMBER_CODE;
-const ADMIN_CODE = process.env.ADMIN_CODE;
 
 const express = require('express');
 const createError = require('http-errors');
@@ -29,9 +27,12 @@ const User = require('./models/User');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+
+//TODO: Can probably make a route called /accounts/ and then have these routes as endpoints after
 const registerRouter = require('./routes/register');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
+const upgradeRouter = require('./routes/upgrade')
 
 /*
 -------------------------------------------------------------------------------------------
@@ -71,9 +72,12 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+//TODO: Can probably make a route called /accounts/ and then have these routes as endpoints after
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
+app.use('/upgrade', upgradeRouter);
 
 /*
 -------------------------------------------------------------------------------------------

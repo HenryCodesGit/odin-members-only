@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <% if(errors.length) { %>
+        <h1>Validation errors</h1>
+            <ul>
+                <% for(let i=0; i<errors.length; i++) { %>
+                    <li><%= errors[i] %></li>
+                <% } %>
+            </ul>
+    <% } %>
+    <h1>Upgrade Account</h1>
+    <form method="POST">
+        <div class="form-control-group">
+            <label for="code">Upgrade code: </label>
+            <input 
+                type="text" 
+                name="code" 
+                id="code" 
+                required
+                value= <% if(errors.length) { %> <%= info.code %> <% } else { %>  '' <% } %> 
+            />
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

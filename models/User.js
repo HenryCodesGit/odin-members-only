@@ -13,6 +13,15 @@ const UserSchema = new Schema({
     status: { type: String, enum: ['new','member','admin'], default: 'new'}
 });
 
+UserSchema.virtual('canSeePosts').get(function(){
+    return ['member','admin'].includes(this.status);
+})
+
+UserSchema.virtual('canEditPosts').get(function(){
+    return ['admin'].includes(this.status);
+})
+
 UserSchema.plugin(passportLocalMongoose,{usernameField: 'email'});
+
 
 module.exports = mongoose.model('User', UserSchema);

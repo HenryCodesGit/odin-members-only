@@ -22,8 +22,8 @@
               <% } %>
           </ul>
     <% } %>
-
     <% if (currentUser) { %>
+        <a href="/logout">Log out</a> | <a href="/upgrade">Upgrade Account</a>
         <form method="POST">
           <div class="form-control-group">
             <label for="message">Message: </label>
@@ -31,8 +31,23 @@
           </div>
           <button type="submit">Submit</button>
         </form>
+    <% } else { %>
+      <a href="/register">Register</a>
+      <a href="/login">Log in</a>
+    <% } %>
 
-        <a href="/logout">Log out</a>
+    <% if(messages.length) { %>
+        <% for(let i =0; i< messages.length; i++) { %>
+          <p>
+          <%= messages[i].details %>
+          <% if (currentUser && currentUser.canSeePosts) { %>
+            by: <%= messages[i].user.email %> <%= messages[i].date_posted %> 
+          <% } %>
+          <% if (currentUser && currentUser.canEditPosts) { %>
+            <a href='/delete/<%= messages[i]._id %>'> Delete </a>
+          <% } %>
+        </p>
+        <% } %>
     <% } %>
   </body>
 </html>
